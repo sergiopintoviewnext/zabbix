@@ -1,0 +1,46 @@
+---
+
+- name: Incluir fichero vault.yml
+  ansible.builtin.include_vars:
+    file: vault.yml
+
+
+- name: Instalar mariadb-server y pip
+  ansible.builtin.package:
+    name: "{{ item }}"
+    state: present
+    update_cache: true
+  with_items:
+    - mariadb-server
+    - python3-pip
+
+
+- name: Instalar PyMySQL
+  ansible.builtin.pip:
+    name: PyMySQL
+    state: present
+
+
+- name: Levantar servicio mariadb
+  ansible.builtin.service:
+    name: mariadb
+    state: started
+    enabled: true
+
+
+- name: Crear db
+  community.mysql.mysql_db:
+    name: "{{ db_name }}"
+    state: present
+    login_unix_socket: "{{ login_socket }}"
+
+
+- name: Crear usuario
+  community.mysql.mysql_user:
+    name: "{{ db_user }}"
+    password: "{{ db_password }}"
+    priv: "{{ db_name }}.*:ALL"
+    state: present
+    login_unix_socket: "{{ login_socket }}"    
+
+...

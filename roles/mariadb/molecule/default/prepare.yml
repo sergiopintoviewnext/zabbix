@@ -1,0 +1,15 @@
+---
+
+- name: Prepare
+  hosts: all
+  gather_facts: true
+  tasks:
+    - name: Añadir repo Appstream
+      ansible.builtin.yum_repository:
+        name: Centos8_Appstream
+        description: Centos8 Appstream
+        baseurl: http://mirror.centos.org/centos/8-stream/AppStream/x86_64/os/
+        gpgcheck: no
+      when: ansible_os_family == "RedHat"  
+
+...
