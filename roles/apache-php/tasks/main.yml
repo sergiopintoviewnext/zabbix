@@ -1,0 +1,32 @@
+---
+
+- name: Instalar apache
+  ansible.builtin.package:
+    name: "{{ servicio }}"
+    state: present
+    update_cache: true
+    
+
+- name: Instalar php
+  ansible.builtin.package:
+    name: "{{ paquetes }}"
+    state: present
+    update_cache: true
+
+
+- name: Iniciar servicio
+  ansible.builtin.service:
+    name: "{{ servicio }}"
+    state: started
+    enabled: true
+
+
+- name: Habilitar firewall en Rhel
+  ansible.posix.firewalld:
+    service: http
+    state: enabled
+    permanent: true
+    immediate: true
+  when: ansible_os_family == "RedHat" 
+
+...

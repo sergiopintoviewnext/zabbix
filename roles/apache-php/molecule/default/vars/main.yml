@@ -1,0 +1,36 @@
+---
+
+servicio: '{% if ansible_distribution == "Debian" %}apache2{% else %}httpd{% endif %}'
+
+
+
+paquetes: '{% if ansible_distribution == "Debian" %}{{ paquetes_debian }}{% else %}{{ paquetes_redhat }}{% endif %}'
+
+
+
+paquetes_debian:
+  - php
+  - php-cli
+  - php-common
+  - php-dev
+  - php-pear
+  - php-gd
+  - php-mbstring
+  - php-mysql
+  - php-xml
+  - php-bcmath
+  - libapache2-mod-php
+
+paquetes_redhat:
+  - php
+  - php-cli
+  - php-common
+  - php-pear
+  - php-gd
+  - php-mbstring
+  - php-xml
+  - php-bcmath
+  - php-mysqlnd
+
+
+...

@@ -1,0 +1,40 @@
+---
+
+- name: Prepare
+  hosts: all
+  gather_facts: true
+  tasks:
+      - name: Preparando contenedor ubi8
+        block:
+        - name: Añadir repo Appstream
+          ansible.builtin.yum_repository:
+            name: Centos8_Appstream
+            description: Centos8 Appstream
+            baseurl: http://mirror.centos.org/centos/8-stream/AppStream/x86_64/os/
+            gpgcheck: no
+
+        - name: Añadir repo BaseOS
+          ansible.builtin.yum_repository:
+            name: Centos8_BaseOS
+            description: Centos8 BaseOS
+            baseurl: http://mirror.centos.org/centos/8-stream/BaseOS/x86_64/os/
+            gpgcheck: no
+
+        - name: Instalar firewalld
+          ansible.builtin.yum:
+            name: "{{ item }}"
+            state: present
+            update_cache: true
+          with_items:
+            - firewalld
+            - python3-firewall
+
+        - name: Habilitar servicio firewalld
+          ansible.builtin.service:
+            name: firewalld
+            state: started
+            enabled: true
+
+        when: ansible_os_family == "RedHat"      
+
+...
