@@ -37,7 +37,7 @@
 
     - name: Stat de la carpeta /usr/bin/php
       stat:
-        path: /usr/bin/php
+        path: "/usr/bin/{{ version_php }}"
       register: php
 
     - name: Comprobar que existe la carpeta /usr/bin/php

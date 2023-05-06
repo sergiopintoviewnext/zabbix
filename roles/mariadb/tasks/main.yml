@@ -39,7 +39,7 @@
   community.mysql.mysql_user:
     name: "{{ db_user }}"
     password: "{{ db_password }}"
-    priv: "{{ db_name }}.*:ALL"
+    priv: "{{ db_name }}.*:ALL,GRANT"
     state: present
     login_unix_socket: "{{ login_socket }}"    
 

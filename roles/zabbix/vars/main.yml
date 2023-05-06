@@ -1,0 +1,30 @@
+
+
+paquetes: '{% if ansible_os_family == "Debian" %}{{ paquetes_debian }}{% else %}{{ paquetes_redhat }}{% endif %}'
+
+paquetes_debian:
+  - zabbix-server-mysql
+  - zabbix-apache-conf
+  - zabbix-frontend-php
+  - zabbix-sql-scripts
+  - zabbix-agent
+  - zabbix-get  
+
+paquetes_redhat:
+  - zabbix-server-mysql
+  - zabbix-web-mysql
+  - zabbix-apache-conf
+  - zabbix-sql-scripts
+  - zabbix-agent
+  - zabbix-selinux-policy
+  - glibc-langpack-en
+  - gzip
+
+
+db_host: localhost
+db_name: zabbix
+db_user: zabbix
+
+
+php: '{% if ansible_os_family == "Debian" %}apache2{% else %}php82-php-fpm{% endif %}'
+path_php: '{% if ansible_os_family == "Debian" %}/etc/php/7.4/apache2/php.ini{% else %}/etc/opt/remi/php82/php.ini{% endif %}'

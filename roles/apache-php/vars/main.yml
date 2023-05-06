@@ -22,15 +22,15 @@ paquetes_debian:
   - libapache2-mod-php
 
 paquetes_redhat:
-  - php
-  - php-cli
-  - php-common
-  - php-pear
-  - php-gd
-  - php-mbstring
-  - php-xml
-  - php-bcmath
-  - php-mysqlnd
+  - php82
+  - php82-php-cli
+  - php82-php-common
+  - php82-php-pear
+  - php82-php-gd
+  - php82-php-mbstring
+  - php82-php-xml
+  - php82-php-bcmath
+  - php82-php-mysqlnd
 
 
 ...

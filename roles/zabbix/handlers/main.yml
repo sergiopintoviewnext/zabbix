@@ -1,0 +1,9 @@
+---
+
+- name: Reiniciar PHP
+  ansible.builtin.service:
+    name: "{{ php }}"
+    state: restarted
+    enabled: true
+
+...

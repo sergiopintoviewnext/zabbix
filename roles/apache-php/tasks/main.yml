@@ -1,5 +1,21 @@
 ---
 
+- name: Añadir repo Epel en Rhel
+  ansible.builtin.yum:
+    name: https://dl.fedoraproject.org/pub/epel/epel-release-latest-8.noarch.rpm
+    state: present
+    disable_gpg_check: true
+  when: ansible_os_family == "RedHat" 
+
+
+- name: Añadir repo remi en Rhel
+  ansible.builtin.yum:
+    name: https://rpms.remirepo.net/enterprise/remi-release-8.rpm
+    state: present
+    disable_gpg_check: true
+  when: ansible_os_family == "RedHat" 
+  
+
 - name: Instalar apache
   ansible.builtin.package:
     name: "{{ servicio }}"
@@ -10,7 +26,7 @@
 - name: Instalar php
   ansible.builtin.package:
     name: "{{ paquetes }}"
-    state: present
+    state: latest
     update_cache: true
 
 
