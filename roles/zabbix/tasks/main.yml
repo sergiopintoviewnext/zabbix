@@ -51,14 +51,19 @@
 
 
 - name: Importar db zabbix
-  shell:
-    cmd: "zcat /usr/share/zabbix-sql-scripts/mysql/server.sql.gz | mysql -u {{ db_user }} -p{{ db_password }} -D {{ db_name }}"
-  changed_when: false
+  community.mysql.mysql_db:
+    name: "{{ db_name }}"
+    state: import
+    force: true
+    target: /usr/share/zabbix-sql-scripts/mysql/server.sql.gz
+    login_unix_socket: "{{ login_socket }}"
 
 
 - name: Configuracion Zabbix
   ansible.builtin.lineinfile:
     path: /etc/zabbix/zabbix_server.conf
+    regexp: "^DBPassword="
+    insertafter: "^# DBPassword"
     line: "DBPassword={{ db_password }}"
 
 
@@ -78,9 +83,10 @@
     }
     - {
       regexp: "^max_input_time",
-      line: "max_input_time = 300"      
+      line: "max_input_time = 301"      
     }    
   notify: Reiniciar PHP
+
 
 - name: Crear enlace simbolico para web zabbix
   ansible.builtin.file:
