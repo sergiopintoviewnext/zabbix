@@ -32,6 +32,7 @@
   community.mysql.mysql_db:
     name: "{{ db_name }}"
     state: present
+    encoding: utf8mb4
     login_unix_socket: "{{ login_socket }}"
 
 

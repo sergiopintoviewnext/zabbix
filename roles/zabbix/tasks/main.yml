@@ -51,12 +51,9 @@
 
 
 - name: Importar db zabbix
-  community.mysql.mysql_db:
-    name: "{{ db_name }}"
-    state: import
-    force: true
-    target: /usr/share/zabbix-sql-scripts/mysql/server.sql.gz
-    login_unix_socket: "{{ login_socket }}"
+  shell:
+    cmd: "zcat /usr/share/zabbix-sql-scripts/mysql/server.sql.gz | mysql --default-character-set=utf8mb4 -u {{ db_user }} -p{{ db_password }} -D {{ db_name }}"
+  changed_when: false
 
 
 - name: Configuracion Zabbix
