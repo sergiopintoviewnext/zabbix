@@ -23,7 +23,7 @@ paquetes_redhat:
 db_host: localhost
 db_name: zabbix
 db_user: zabbix
-login_socket: '{% if ansible_distribution == "Debian" %}/var/run/mysqld/mysqld.sock{% endif %}'
+login_socket: '{% if ansible_os_family == "Debian" %}/var/run/mysqld/mysqld.sock{% else %}/var/lib/mysql/mysql.sock{% endif %}'
 
 
 php: '{% if ansible_os_family == "Debian" %}apache2{% else %}php82-php-fpm{% endif %}'

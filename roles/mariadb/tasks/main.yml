@@ -5,6 +5,22 @@
     file: vault.yml
 
 
+- name: Instalar curl
+  ansible.builtin.package:
+    name: curl
+    state: present
+    update_cache: true
+
+
+- name: Descargar e instalar repo mariadb
+  ansible.builtin.shell:
+    cmd: "{{ item }}"
+  with_items:
+    - curl -LsS -O https://downloads.mariadb.com/MariaDB/mariadb_repo_setup
+    - bash mariadb_repo_setup --mariadb-server-version=10.10
+  changed_when: false
+
+
 - name: Instalar mariadb-server y pip
   ansible.builtin.package:
     name: "{{ item }}"

@@ -5,6 +5,32 @@
   hosts: all
   gather_facts: false
   tasks:
-  - name: Example assertion
-    ansible.builtin.assert:
-      that: true
+    - name: Iniciar zabbix-server
+      ansible.builtin.service:
+        name: "{{ item }}"
+        state: started
+      with_items:
+        - zabbix-server
+        - zabbix-agent
+      register: zabbix
+
+    
+    - name: Comprobar servicios zabbix 
+      ansible.builtin.assert:
+        that: not item.changed
+        success_msg: "Servicio {{ item.item }} corriendo"
+        fail_msg: "Servicio {{ item.item }} no esta corriendo"
+      with_items: "{{ zabbix.results }}"
+
+
+    - name: Comprobar conexion a pagina de zabbix
+      ansible.builtin.uri:
+        url: http://localhost/zabbix/
+      register: pagina
+
+
+    - name: Comprobar codigo http
+      assert:
+        that: pagina.status == 200
+        success_msg: "Web Zabbix funcionando correctamente"
+        fail_msg: "Web Zabbix no esta funcionando correctamente"
