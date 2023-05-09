@@ -9,14 +9,29 @@
     - vault.yml
   tasks:
 
+  - name: Comprobar version mariadb
+    ansible.builtin.command:
+      cmd: "mysql --version"
+    register: version
+
+
+  - name: Assert version
+    ansible.builtin.assert:
+      that: '"10.10" in version.stdout'
+      success_msg: "Version correcta"
+      fail_msg: "Version incorrecta"
+  
+
   - name: Comprobar conexion con usuario wordpress a db wordpress
     ansible.builtin.command:
       cmd: "mysql -u {{ db_user }} -D {{ db_name }} -p{{ db_password }}"
     register: comando_mysql
-  
+ 
 
   - name: Assert comando_mysql
     ansible.builtin.assert:
       that: comando_mysql.rc == 0
       success_msg: "Conexion a db '{{ db_name }}' con usuario '{{ db_user }}' establecida correctamente"
       fail_msg: "ERROR al establecer la conexion a db '{{ db_name }}' con el usuario '{{ db_user }}'"
+
+...

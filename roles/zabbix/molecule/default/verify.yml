@@ -30,7 +30,9 @@
 
 
     - name: Comprobar codigo http
-      assert:
+      ansible.builtin.assert:
         that: pagina.status == 200
         success_msg: "Web Zabbix funcionando correctamente"
         fail_msg: "Web Zabbix no esta funcionando correctamente"
+
+...

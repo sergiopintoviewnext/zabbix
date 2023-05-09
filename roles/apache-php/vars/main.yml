@@ -6,8 +6,6 @@ servicio: '{% if ansible_os_family == "Debian" %}apache2{% else %}httpd{% endif 
 
 paquetes: '{% if ansible_os_family == "Debian" %}{{ paquetes_debian }}{% else %}{{ paquetes_redhat }}{% endif %}'
 
-
-
 paquetes_debian:
   - php
   - php-cli

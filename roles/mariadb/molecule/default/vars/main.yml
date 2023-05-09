@@ -3,7 +3,4 @@
 db_name: zabbix
 db_user: zabbix
 
-
-login_socket: '{% if ansible_distribution == "Debian" %}/var/run/mysqld/mysqld.sock{% endif %}'
-
 ...

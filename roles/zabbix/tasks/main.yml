@@ -5,24 +5,19 @@
     file: vault.yml
 
 
-- name: Añadir repositorio Zabbix y epel en RedHat
+- name: Añadir repositorio Zabbix en RedHat
+  when: ansible_os_family == "RedHat"
   block:
-  - name: Añadir repo Epel
-    ansible.builtin.yum:
-      name: https://dl.fedoraproject.org/pub/epel/epel-release-latest-8.noarch.rpm
-      state: present
-      disable_gpg_check: true
-
   - name: Instalar repositorio Zabbix Rhel
     ansible.builtin.yum_repository:
-      name: Centos8_Zabbix
-      description: Centos8 Zabbix
+      name: Zabbix
+      description: Zabbix
       baseurl: https://repo.zabbix.com/zabbix/6.4/rhel/8/x86_64/
       gpgcheck: no
-  when: ansible_os_family == "RedHat"
 
 
 - name: Añadir repositorio Zabbix en Debian
+  when: ansible_distribution == "Debian"
   block:
   - name: Instalar gnupg
     ansible.builtin.apt:
@@ -39,7 +34,6 @@
     ansible.builtin.apt_repository:
       repo: deb https://repo.zabbix.com/zabbix/6.4/debian/ {{ ansible_distribution_release }} main
       state: present
-  when: ansible_distribution == "Debian"
 
 
 - name: Instalar zabbix
@@ -51,8 +45,13 @@
 
 
 - name: Importar db zabbix
-  ansible.builtin.shell:
-    cmd: "zcat /usr/share/zabbix-sql-scripts/mysql/server.sql.gz | mysql --default-character-set=utf8mb4 -u {{ db_user }} -p{{ db_password }} -D {{ db_name }}"
+  community.mysql.mysql_db:
+    name: "{{ db_name }}"
+    state: import
+    force: true
+    encoding: utf8mb4
+    target: /usr/share/zabbix-sql-scripts/mysql/server.sql.gz
+    login_unix_socket: "{{ login_socket }}"
   changed_when: false
 
 
@@ -100,6 +99,5 @@
   with_items:
     - zabbix-server
     - zabbix-agent
-
 
 ...
